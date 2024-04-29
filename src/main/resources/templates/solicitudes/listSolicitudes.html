@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="icon" href="favicon.ico" />
+
+    <title>EmpleosApp | Listado de Solicitudes de Empleo</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet" />
+    <link
+      th:href="@{/bootstrap/css/sticky-footer-navbar.css}"
+      rel="stylesheet"
+    />
+    <link
+      href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header th:insert="~{fragments/menu :: menu-principal}"></header>
+
+    <main role="main">
+      <hr />
+      <div class="container">
+        <div class="card">
+          <h4 class="card-header">
+            <strong>Listado de Solicitudes de Empleo</strong>
+          </h4>
+          <div class="card-body">
+            <hr />
+            <div
+              th:if="${msg != null}"
+              class="alert alert-success"
+              th:text="${msg}"
+              role="alert"
+            ></div>
+            <table class="table table-hover">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Categoría</th>
+                  <th scope="col">Vacante</th>
+                  <th scope="col">Nombre Candidato</th>
+                  <th scope="col">Recibida</th>
+                  <th scope="col">Operaciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="sol : ${solicitudes}" >
+                  <td th:text="${sol.vacante.categorias.nombre}"></td>
+                  <td th:text="${sol.vacante.nombre}"></td>
+                  <td th:text="${sol.usuario.nombre}"></td>
+                  <td th:text="${sol.fecha}"></td>
+                  <td>
+                    <a
+                      href="#"
+                      class="btn btn-success btn-sm"
+                      role="button"
+                      title="Editar el registro."
+                      ><i class="fas fa-pencil-alt" aria-hidden="true"></i
+                    ></a>
+                    <a
+                      th:href="@{/solicitudes/delete/{id} (id=${sol.id})}"
+                      class="btn btn-success btn-sm confirmar"
+                      role="button"
+                      title="Eliminar el registro."
+                      ><i class="fas fa-trash" aria-hidden="true"></i
+                    ></a>
+                    <a
+                      href="#"
+                      class="btn btn-success btn-sm"
+                      role="button"
+                      title="Enviar correo electrónico al usuario."
+                      ><i class="fas fa-envelope" aria-hidden="true"></i
+                    ></a>
+                    <a
+                      th:href="@{/cv/{archivo} (archivo=${sol.archivo})}"
+                      target="_blank"
+                      class="btn btn-success btn-sm"
+                      role="button"
+                      title="Descargar Curriculm Vitae."
+                      ><i class="fas fa-download" aria-hidden="true"></i
+                    ></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- /container -->
+    </main>
+
+    <footer
+      class="footer"
+      th:insert="~{fragments/footer :: footer-principal}"
+    ></footer>
+
+    <!-- Bootstrap core JavaScript
+        ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+  
+
+    <script>
+      // Guardamos en una variable una funcion que muestra un cuadro de dialogo de tipo confirm
+      var dialogoConfirm = function (e) {
+        if (!confirm("¿Realmente desea eliminar el registro?"))
+          e.preventDefault();
+      };
+
+      // Aplicamos a todos los elementos HTML que tengan la clase CSS 'confirmar' el evento click para que muestre el cuadro de dialogo de confirmacion.
+      document.querySelectorAll(".confirmar").forEach(function (elemento) {
+        elemento.addEventListener("click", dialogoConfirm, false);
+      });
+    </script>
+  </body>
+</html>

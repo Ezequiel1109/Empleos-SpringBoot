@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="icon" href="favicon.ico" />
+
+    <title>EmpleosApp | Aplicación para publicar Ofertas de Trabajo.</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet" />
+    <link
+      th:href="@{/bootstrap/css/sticky-footer-navbar.css}"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header th:insert="~{fragments/menu :: menu-principal}"></header>
+
+    <main role="main">
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <div class="container">
+          <h3>Encuentra el trabajo que andas buscando.</h3>
+          Puedes buscar por descripción y categoría.
+          <form
+            class="form-inline"
+            th:object="${search}"
+            th:action="@{/search}"
+            method="get"
+          >
+            <input
+              type="text"
+              class="form-control mb-3"
+              id="exampleFormControlInput1"
+              th:field="*{descripcion}"
+              placeholder="Escriba una búsqueda"
+            />&nbsp;
+            <select
+              th:field="*{categorias.id}"
+              class="custom-select custom-select mb-3"
+            >
+              <option th:value="${null}" selected>
+                Seleccione una Categoria
+              </option>
+              <option
+                th:each="categoria : ${categorias}"
+                th:value="${categoria.id}"
+                th:text="${categoria.nombre}"
+              />
+            </select>
+            <button type="submit" class="btn btn-primary mb-3">Buscar</button>
+          </form>
+        </div>
+      </div>
+      <hr />
+
+      <div class="container">
+        <h2 class="font-weight-bold text-center text-capitalize">DESTACADOS</h2>
+        <div
+          th:if="${msg != null}"
+          class="alert alert-success"
+          th:text="${msg}"
+          role="alert"
+        ></div>
+        <hr />
+        <div class="row" th:each="vacante : ${vacantes}">
+          <div class="col-md-3">
+            <img
+              class="rounded mx-auto d-block"
+              th:src="@{/logos/{img} (img=${vacante.imagen})}"
+              alt="Generic placeholder image"
+              width="220"
+              height="220"
+            />
+          </div>
+          <div class="col-md-9">
+            <h2 th:text="${vacante.nombre}"></h2>
+            <h6 class="card-title">
+              <strong>Categoría: </strong>
+              <span th:text="${vacante.categorias.nombre}"></span>
+            </h6>
+            <h6 class="card-title">
+              <strong>Publicado: </strong>
+              <span
+                th:text="${#dates.format(vacante.fecha, 'dd-MM-yyyy')}"
+              ></span>
+            </h6>
+            <p th:text="${vacante.descripcion}"></p>
+            <p>
+              <a
+                class="btn btn-outline-success"
+                th:href="@{/vacantes/view/{id} (id=${vacante.id})}"
+                role="button"
+                >Ver Detalles</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- /container -->
+    </main>
+
+    <footer
+      class="footer"
+      th:insert="~{fragments/footer :: footer-principal}"
+    ></footer>
+
+    <!-- Bootstrap core JavaScript
+        ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+  </body>
+</html>

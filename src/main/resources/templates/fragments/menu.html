@@ -1,0 +1,54 @@
+<nav
+  th:fragment="menu-principal"
+  class="navbar navbar-expand-md navbar-dark fixed-top bg-dark"
+>
+  <a class="navbar-brand" th:href="@{/}">EmpleosApp</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarsExampleDefault"
+    aria-controls="navbarsExampleDefault"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li
+        class="nav-item"
+        sec:authorize="hasAnyAuthority('Supervisor','Administrador')"
+      >
+        <a class="nav-link" th:href="@{/solicitudes/indexPaginate}">Solicitudes</a>
+      </li>
+      <li
+        class="nav-item"
+        sec:authorize="hasAnyAuthority('Supervisor','Administrador')"
+      >
+        <a class="nav-link" th:href="@{/vacantes/indexPaginate}">Vacantes</a>
+      </li>
+      <li
+        class="nav-item"
+        sec:authorize="hasAnyAuthority('Supervisor','Administrador')"
+      >
+        <a class="nav-link" th:href="@{/categorias/indexPaginate}"
+          >Categorias</a
+        >
+      </li>
+      <li class="nav-item" sec:authorize="hasAnyAuthority('Administrador')">
+        <a class="nav-link" th:href="@{/usuarios/index}">Usuarios</a>
+      </li>
+    </ul>
+    <div sec:authorize="isAnonymous()">
+      <a class="btn btn-primary" th:href="@{/index}">Ingresar</a>&nbsp;
+      <a class="btn btn-primary" th:href="@{/signup}">Registrarse</a>&nbsp;
+    </div>
+    <div sec:authorize="isAuthenticated()">
+      <span class="text-light">Bienvenido</span>&nbsp;
+      <span class="text-light" sec:authentication="name"/>&nbsp;
+      <a class="btn btn-primary" th:href="@{/logout}">Salir</a>&nbsp;
+    </div>
+  </div>
+</nav>
